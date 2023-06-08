@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TaleCraft.Helpers;
 using TaleCraft.Interfaces;
 using TaleCraft.Models;
 
@@ -21,14 +20,35 @@ public class StoryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> PostStory(Story story)
+    public async Task<IActionResult> InitStory(StoryDTO story)
     {
-        var createdStory = await _storyService.AddStory(story);
-        return CreatedAtAction(nameof(GetStory), new { id = createdStory.Id }, createdStory);
+        
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            var storyToCreate = new Story
+            {
+                Title = story.Title,
+                Published = story.Published,
+                Description = story.Description,
+
+            };
+            var createdStory = await _storyService.AddStory(storyToCreate);
+            return CreatedAtAction(nameof(GetStory), new { id = createdStory.Id }, createdStory);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        
     }
     
     [HttpGet("{id}")]
-    public async Task<ActionResult<Story>> GetStory(int id)
+    public async Task<ActionResult<Story>> GetStory(Guid id)
     {
         var story = await _storyService.GetStory(id);
         if (story == null)

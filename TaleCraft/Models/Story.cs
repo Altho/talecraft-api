@@ -1,9 +1,17 @@
-namespace TaleCraft.Models;
+using System;
+using System.ComponentModel.DataAnnotations;
 
-public class Story
+namespace TaleCraft.Models
 {
-    public int Id { get; set; }
-    public string? Title { get; set; }
-    public bool Published { get; set; }
-    public string? Content { get; set; }
+    public class Story
+    {
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string? Title { get; set; }
+        public bool Published { get; set; }
+        public string? Description { get; set; }
+        public Guid? FirstPageId { get; set; }
+        public Page? FirstPage { get; set; }
+        public ICollection<Page> Pages { get; set; } = new List<Page>();
+    }
 }

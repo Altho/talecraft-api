@@ -49,7 +49,8 @@ namespace TaleCraft.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
-            var userFromRepo = await _authService.Login(userForLoginDto.Username, userForLoginDto.Password);
+            Console.WriteLine("login requested");
+            var userFromRepo = await _authService.Login(userForLoginDto.Identifier, userForLoginDto.Password);
 
             if (userFromRepo == null)
                 return Unauthorized();

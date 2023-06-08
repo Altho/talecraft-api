@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using TaleCraft.Helpers;
 using TaleCraft.Interfaces;
 using TaleCraft.Models;
 
@@ -21,7 +20,7 @@ public class StoryService : IStoryService
         await _context.SaveChangesAsync();
         return story;
     }
-    public async Task<Story> GetStory(int id)
+    public async Task<Story> GetStory(Guid id)
     {
         return await _context.Stories.FindAsync(id);
     }

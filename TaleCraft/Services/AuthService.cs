@@ -4,8 +4,6 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using TaleCraft.Helpers;
-using TaleCraft.Interfaces;
 using TaleCraft.Models;
 
 namespace TaleCraft.Services;
@@ -43,10 +41,10 @@ public class AuthService : IAuthService
         return user;
     }
 
-    public async Task<User> Login(string username, string password)
+    public async Task<User> Login(string identifier, string password)
     {
         // Check if user exists
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == identifier || u.Email == identifier);
 
         if (user == null)
         {
